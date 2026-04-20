@@ -1,0 +1,62 @@
+// ═══════════════════════════════════════════════════════
+// SHOP HUB — Apogee-Style Design System Variables
+// ═══════════════════════════════════════════════════════
+
+// ─── Core Colors ───
+$primary-dark: #0A0A0A;
+$secondary-dark: #111111;
+$tertiary-dark: #1A1A1A;
+$surface-dark: #141414;
+
+// ─── Accent Colors ───
+$accent-cyan: #00F0FF;
+$accent-purple: #8B5CF6;
+$accent-blue: #3B82F6;
+$accent-pink: #EC4899;
+$success: #10B981;
+$warning: #F59E0B;
+$danger: #EF4444;
+
+// ─── Gradients ───
+$gradient-primary: linear-gradient(135deg, $accent-cyan, $accent-purple);
+$gradient-secondary: linear-gradient(135deg, $accent-blue, $accent-cyan);
+$gradient-danger: linear-gradient(135deg, #EF4444, #DC2626);
+
+// ─── Text Colors ───
+$text-primary: #FFFFFF;
+$text-secondary: #A3A3A3;
+$text-muted: #666666;
+$text-accent: $accent-cyan;
+
+// ─── Glass Effect ───
+$glass-bg: rgba(26, 26, 26, 0.7);
+$glass-bg-hover: rgba(26, 26, 26, 0.85);
+$glass-border: rgba(0, 240, 255, 0.1);
+$glass-border-hover: rgba(0, 240, 255, 0.3);
+$glass-blur: 12px;
+
+// ─── Shadows ───
+$shadow-glow-sm: 0 0 10px rgba(0, 240, 255, 0.1);
+$shadow-glow-md: 0 0 20px rgba(0, 240, 255, 0.15);
+$shadow-glow-lg: 0 0 40px rgba(0, 240, 255, 0.2);
+$shadow-card: 0 4px 24px rgba(0, 0, 0, 0.3);
+
+// ─── Border Radius ───
+$radius-sm: 8px;
+$radius-md: 12px;
+$radius-lg: 16px;
+$radius-xl: 24px;
+
+// ─── Typography ───
+$font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+$font-display: 'Space Grotesk', 'Inter', sans-serif;
+
+// ─── Spacing ───
+$nav-height: 72px;
+$container-max: 1280px;
+$section-padding: 80px;
+
+// ─── Breakpoints ───
+$mobile: 768px;
+$tablet: 1024px;
+$desktop: 1280px;
