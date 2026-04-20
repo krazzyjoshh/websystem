@@ -1,5 +1,5 @@
 [phases.setup]
-nixPkgs = ["php74", "php74Extensions.pdo_mysql", "php74Extensions.mbstring", "php74Extensions.xml", "php74Extensions.curl", "php74Extensions.tokenizer", "php74Extensions.json", "nodejs-18_x"]
+nixPkgs = ["php81", "php81Extensions.pdo_mysql", "php81Extensions.mbstring", "php81Extensions.xml", "php81Extensions.curl", "php81Extensions.tokenizer", "php81Extensions.json", "nodejs-18_x"]
 
 [phases.install]
 cmds = ["composer install --no-dev --optimize-autoloader", "npm install"]
