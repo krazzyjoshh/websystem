@@ -46,11 +46,11 @@ class CheckoutController extends Controller
         $request->validate([
             'customer_name' => 'required|string|max:255',
             'customer_email' => 'required|email',
-            'customer_phone' => 'required|string|max:20',
-            'shipping_address' => 'required|string',
+            'customer_phone' => 'required|string|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
+            'shipping_address' => 'required|string|min:10',
             'city' => 'required|string|max:100',
             'province' => 'required|string|max:100',
-            'zip_code' => 'required|string|max:10',
+            'zip_code' => 'required|string|regex:/^[0-9]{4}$/',
             'payment_method' => 'required|in:cod,gcash,maya',
             'notes' => 'nullable|string',
         ]);

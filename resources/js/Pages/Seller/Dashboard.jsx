@@ -14,12 +14,12 @@ export default function SellerDashboard({ profile, stats, recentOrders, monthlyC
         datasets: [{
             label: 'Earnings (₱)',
             data: monthlyChart.map(m => m.earnings),
-            borderColor: '#00F0FF',
-            backgroundColor: 'rgba(0, 240, 255, 0.08)',
+            borderColor: '#8B5CF6',
+            backgroundColor: 'rgba(139, 92, 246, 0.1)',
             fill: true,
             tension: 0.4,
-            pointBackgroundColor: '#00F0FF',
-            pointBorderColor: '#0A0A0A',
+            pointBackgroundColor: '#8B5CF6',
+            pointBorderColor: '#FFFFFF',
             pointBorderWidth: 2,
         }],
     };
@@ -28,39 +28,39 @@ export default function SellerDashboard({ profile, stats, recentOrders, monthlyC
         <SellerLayout title="Seller Dashboard">
             <Head title="Seller Dashboard" />
             <div className="admin-stats">
-                <div className="admin-stat-card glass-card">
-                    <div className="admin-stat-card__label">Monthly Earnings</div>
-                    <div className="admin-stat-card__value" style={{ color: '#00F0FF' }}>₱{(stats.monthlyEarnings || 0).toLocaleString('en-PH', { minimumFractionDigits: 2 })}</div>
+                <div className="admin-stat-card">
+                    <div className="admin-stat-card__label"><DollarSign size={16}/> Monthly Earnings</div>
+                    <div className="admin-stat-card__value">₱{(stats.monthlyEarnings || 0).toLocaleString('en-PH', { minimumFractionDigits: 2 })}</div>
                     <div className="admin-stat-card__trend"><TrendingUp size={14} /> This month</div>
                 </div>
-                <div className="admin-stat-card glass-card">
-                    <div className="admin-stat-card__label">Total Products</div>
-                    <div className="admin-stat-card__value" style={{ color: '#8B5CF6' }}>{stats.totalProducts}</div>
+                <div className="admin-stat-card">
+                    <div className="admin-stat-card__label"><Package size={16}/> Total Products</div>
+                    <div className="admin-stat-card__value">{stats.totalProducts}</div>
                 </div>
-                <div className="admin-stat-card glass-card">
-                    <div className="admin-stat-card__label">Products Sold</div>
-                    <div className="admin-stat-card__value" style={{ color: '#10B981' }}>{stats.totalSold}</div>
+                <div className="admin-stat-card">
+                    <div className="admin-stat-card__label"><ShoppingCart size={16}/> Products Sold</div>
+                    <div className="admin-stat-card__value">{stats.totalSold}</div>
                 </div>
             </div>
 
             <div className="glass-card" style={{ padding: 24, marginBottom: 32 }}>
-                <h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 600, color: '#A3A3A3', marginBottom: 20 }}>Earnings Trend</h3>
+                <h3 className="admin-chart-card__title">Earnings Trend</h3>
                 <div style={{ height: 280 }}>
-                    <Line data={lineData} options={{ responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#666' } }, y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#666' } } } }} />
+                    <Line data={lineData} options={{ responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { backgroundColor: '#FFF', borderColor: '#E5E7EB', titleColor: '#111827', bodyColor: '#6B7280', borderWidth: 1 } }, scales: { x: { grid: { color: 'rgba(0,0,0,0.03)' }, ticks: { color: '#6B7280' } }, y: { grid: { color: 'rgba(0,0,0,0.03)' }, ticks: { color: '#6B7280' } } } }} />
                 </div>
             </div>
 
             <div className="glass-card" style={{ padding: 24 }}>
-                <h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 600, color: '#A3A3A3', marginBottom: 20 }}>Recent Orders</h3>
+                <h3 className="admin-chart-card__title">Recent Orders</h3>
                 <table className="admin-table">
                     <thead><tr><th>Product</th><th>Customer</th><th>Qty</th><th>Total</th><th>Status</th></tr></thead>
                     <tbody>
                         {recentOrders.map((item) => (
                             <tr key={item.id}>
-                                <td style={{ fontWeight: 600, color: '#FFF' }}>{item.product?.name || item.product_name}</td>
+                                <td style={{ fontWeight: 600 }}>{item.product?.name || item.product_name}</td>
                                 <td>{item.order?.user?.name || 'N/A'}</td>
                                 <td>{item.quantity}</td>
-                                <td style={{ color: '#00F0FF', fontWeight: 600 }}>₱{parseFloat(item.total).toLocaleString()}</td>
+                                <td style={{ color: '#8B5CF6', fontWeight: 600 }}>₱{parseFloat(item.total).toLocaleString()}</td>
                                 <td><span className={`badge ${item.order?.status === 'delivered' ? 'badge-success' : 'badge-cyan'}`}>{item.order?.status}</span></td>
                             </tr>
                         ))}

@@ -18,7 +18,10 @@ class CheckRole
     public function handle(Request $request, Closure $next, ...$roles)
     {
         if (!$request->user() || !in_array($request->user()->role, $roles)) {
-            abort(403, 'Unauthorized action.');
+            if ($request->expectsJson()) {
+                abort(403, 'Unauthorized action.');
+            }
+            return redirect('/')->with('error', 'Unauthorized access. Your account type is not permitted to view this page.');
         }
 
         return $next($request);

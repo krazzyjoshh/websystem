@@ -26,10 +26,17 @@ Route::get('/category/{slug}', [ProductController::class, 'byCategory'])->name('
 
 // ─── AUTH ───
 Route::middleware('guest')->group(function () {
+    // Customer auth
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
+
+    // Seller auth (separate portal)
+    Route::get('/seller/login', [AuthController::class, 'showSellerLogin'])->name('seller.login');
+    Route::post('/seller/login', [AuthController::class, 'sellerLogin']);
+    Route::get('/seller/register', [AuthController::class, 'showSellerRegister'])->name('seller.register');
+    Route::post('/seller/register', [AuthController::class, 'sellerRegister']);
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
@@ -53,10 +60,12 @@ Route::middleware('auth')->group(function () {
     // Profile
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update.post');
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
 });
 
 // ─── ADMIN ───
+Route::redirect('/admin', '/admin/dashboard');
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
@@ -78,14 +87,19 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::put('/orders/{order}/status', [AdminCrudController::class, 'updateOrderStatus'])->name('orders.status');
 
     Route::get('/sellers', [AdminCrudController::class, 'sellers'])->name('sellers');
+    Route::put('/sellers/{seller}/verify', [AdminCrudController::class, 'verifySeller'])->name('sellers.verify');
+    Route::post('/sellers/invite', [AdminCrudController::class, 'generateInviteCode'])->name('sellers.invite');
 });
 
 // ─── SELLER ───
-Route::middleware(['auth', 'role:seller'])->prefix('seller')->name('seller.')->group(function () {
+Route::redirect('/admin/seller', '/admin/seller/dashboard');
+Route::middleware(['auth', 'role:seller'])->prefix('admin/seller')->name('seller.')->group(function () {
     Route::get('/dashboard', [SellerDashboardController::class, 'index'])->name('dashboard');
     Route::get('/products', [SellerDashboardController::class, 'products'])->name('products');
     Route::post('/products', [SellerDashboardController::class, 'storeProduct'])->name('products.store');
     Route::put('/products/{product}', [SellerDashboardController::class, 'updateProduct'])->name('products.update');
     Route::delete('/products/{product}', [SellerDashboardController::class, 'deleteProduct'])->name('products.delete');
     Route::get('/orders', [SellerDashboardController::class, 'orders'])->name('orders');
+    Route::get('/settings', [SellerDashboardController::class, 'settings'])->name('settings');
+    Route::post('/settings', [SellerDashboardController::class, 'updateSettings'])->name('settings.update');
 });

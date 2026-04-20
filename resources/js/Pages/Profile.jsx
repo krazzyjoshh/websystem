@@ -7,13 +7,18 @@ import './Cart.scss';
 export default function Profile({ user }) {
     const [profile, setProfile] = useState({
         name: user.name || '', phone: user.phone || '', address: user.address || '',
-        city: user.city || '', province: user.province || '', zip_code: user.zip_code || '',
+        city: user.city || '', province: user.province || '', zip_code: user.zip_code || '', avatar: null
     });
     const [passwords, setPasswords] = useState({ current_password: '', password: '', password_confirmation: '' });
 
     const updateProfile = (e) => {
         e.preventDefault();
-        router.put('/profile', profile);
+        const formData = new FormData();
+        Object.keys(profile).forEach(key => {
+            if (profile[key] !== null) formData.append(key, profile[key]);
+        });
+        formData.append('_method', 'put');
+        router.post('/profile', formData);
     };
 
     const updatePassword = (e) => {
@@ -31,6 +36,19 @@ export default function Profile({ user }) {
                     <h1 className="section-title">MY <span className="gradient-text">PROFILE</span></h1>
                     <div className="profile-grid">
                         <form onSubmit={updateProfile} className="profile-card glass-card">
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 24 }}>
+                                {user.avatar ? (
+                                    <img src={user.avatar} alt="Profile" style={{ width: 64, height: 64, borderRadius: '50%', objectFit: 'cover' }} />
+                                ) : (
+                                    <div style={{ width: 64, height: 64, borderRadius: '50%', background: '#222', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <User size={32} color="#888" />
+                                    </div>
+                                )}
+                                <div>
+                                    <label style={{ fontSize: 13, color: '#A3A3A3', display: 'block', marginBottom: 4 }}>Profile Picture</label>
+                                    <input type="file" accept="image/*" onChange={(e) => setProfile({ ...profile, avatar: e.target.files[0] })} style={{ color: '#FFF' }} />
+                                </div>
+                            </div>
                             <h3 className="profile-card__title"><User size={18} style={{ display: 'inline', marginRight: 8 }} />Account Details</h3>
                             {[
                                 { label: 'Full Name', key: 'name' },

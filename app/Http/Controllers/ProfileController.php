@@ -19,14 +19,21 @@ class ProfileController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string',
+            'phone' => 'nullable|string|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
+            'address' => 'nullable|string|min:10',
             'city' => 'nullable|string|max:100',
             'province' => 'nullable|string|max:100',
-            'zip_code' => 'nullable|string|max:10',
+            'zip_code' => 'nullable|string|regex:/^[0-9]{4}$/',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        auth()->user()->update($request->only('name', 'phone', 'address', 'city', 'province', 'zip_code'));
+        $data = $request->only('name', 'phone', 'address', 'city', 'province', 'zip_code');
+        if ($request->hasFile('avatar')) {
+            $path = $request->file('avatar')->store('avatars', 'public');
+            $data['avatar'] = '/storage/' . $path;
+        }
+
+        auth()->user()->update($data);
 
         return back()->with('success', 'Profile updated successfully!');
     }

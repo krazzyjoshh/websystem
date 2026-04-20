@@ -102,7 +102,14 @@ class SellerDashboardController extends Controller
             'is_active' => true,
         ]);
 
-        if ($request->image_url) {
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('products', 'public');
+            $product->images()->create([
+                'image_path' => '/storage/' . $path,
+                'is_primary' => true,
+                'sort_order' => 0,
+            ]);
+        } elseif ($request->image_url) {
             $product->images()->create([
                 'image_path' => $request->image_url,
                 'is_primary' => true,
@@ -142,5 +149,53 @@ class SellerDashboardController extends Controller
         return Inertia::render('Seller/Orders', [
             'orders' => $orders,
         ]);
+    }
+
+    public function settings()
+    {
+        $profile = SellerProfile::where('user_id', auth()->id())->first() 
+            ?? SellerProfile::create([
+                'user_id' => auth()->id(),
+                'shop_name' => auth()->user()->name . '\'s Shop',
+                'shop_description' => '',
+            ]);
+        return Inertia::render('Seller/Settings', [
+            'profile' => $profile
+        ]);
+    }
+
+    public function updateSettings(Request $request)
+    {
+        $request->validate([
+            'user_name' => 'required|string|max:255',
+            'shop_name' => 'required|string|max:255',
+            'shop_description' => 'nullable|string',
+            'shop_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $profile = SellerProfile::where('user_id', auth()->id())->first() 
+            ?? SellerProfile::create([
+                'user_id' => auth()->id(),
+                'shop_name' => $request->shop_name,
+                'shop_description' => $request->shop_description ?? '',
+            ]);
+        
+        $updates = [
+            'shop_name' => $request->shop_name,
+            'shop_description' => $request->shop_description,
+        ];
+
+        if ($request->hasFile('shop_logo')) {
+            $path = $request->file('shop_logo')->store('shops', 'public');
+            $updates['shop_logo'] = '/storage/' . $path;
+        }
+
+        $profile->update($updates);
+
+        if ($request->user_name) {
+            auth()->user()->update(['name' => $request->user_name]);
+        }
+
+        return back()->with('success', 'Settings updated successfully!');
     }
 }

@@ -10,14 +10,14 @@ export default function ProductShow({ product, relatedProducts }) {
     const [quantity, setQuantity] = useState(1);
 
     const addToCart = () => {
-        if (!auth?.user) {
-            router.visit('/login');
-            return;
-        }
-        router.post('/cart/add', {
-            product_id: product.id,
-            quantity,
-            color: product.color,
+        if (!auth?.user) { router.visit('/login'); return; }
+        router.post('/cart/add', { product_id: product.id, quantity, color: product.color });
+    };
+
+    const buyNow = () => {
+        if (!auth?.user) { router.visit('/login'); return; }
+        router.post('/cart/add', { product_id: product.id, quantity, color: product.color }, {
+            onSuccess: () => router.visit('/checkout')
         });
     };
 
@@ -146,14 +146,19 @@ export default function ProductShow({ product, relatedProducts }) {
                             </div>
 
                             {/* Actions */}
-                            <div className="product-detail__actions">
-                                <button className="btn-primary product-detail__add-cart" onClick={addToCart} disabled={product.stock <= 0}>
+                            <div className="product-detail__actions" style={{ display: 'flex', gap: 12 }}>
+                                <button className="btn-primary product-detail__add-cart" onClick={addToCart} disabled={product.stock <= 0} style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
                                     <ShoppingCart size={18} />
                                     {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
                                 </button>
-                                <button className="btn-outline product-detail__wishlist">
-                                    <Heart size={18} />
-                                </button>
+                                {product.stock > 0 && (
+                                    <button onClick={buyNow} style={{ padding: '0 24px', background: '#EDE9FE', color: '#7C3AED', border: 'none', borderRadius: 12, fontWeight: 700, fontSize: 14, cursor: 'pointer', whiteSpace: 'nowrap', transition: 'background 0.2s' }}
+                                        onMouseEnter={e => e.target.style.background = '#DDD6FE'}
+                                        onMouseLeave={e => e.target.style.background = '#EDE9FE'}
+                                    >
+                                        Buy Now
+                                    </button>
+                                )}
                             </div>
 
                             {/* Trust badges */}

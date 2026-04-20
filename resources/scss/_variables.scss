@@ -3,10 +3,10 @@
 // ═══════════════════════════════════════════════════════
 
 // ─── Core Colors ───
-$primary-dark: #0A0A0A;
-$secondary-dark: #111111;
-$tertiary-dark: #1A1A1A;
-$surface-dark: #141414;
+$primary-dark: #F8FAFC;
+$secondary-dark: #FFFFFF;
+$tertiary-dark: #FFFFFF;
+$surface-dark: #FFFFFF;
 
 // ─── Accent Colors ───
 $accent-cyan: #00F0FF;
@@ -23,16 +23,16 @@ $gradient-secondary: linear-gradient(135deg, $accent-blue, $accent-cyan);
 $gradient-danger: linear-gradient(135deg, #EF4444, #DC2626);
 
 // ─── Text Colors ───
-$text-primary: #FFFFFF;
-$text-secondary: #A3A3A3;
-$text-muted: #666666;
-$text-accent: $accent-cyan;
+$text-primary: #0F172A;
+$text-secondary: #475569;
+$text-muted: #94A3B8;
+$text-accent: $accent-blue;
 
 // ─── Glass Effect ───
-$glass-bg: rgba(26, 26, 26, 0.7);
-$glass-bg-hover: rgba(26, 26, 26, 0.85);
-$glass-border: rgba(0, 240, 255, 0.1);
-$glass-border-hover: rgba(0, 240, 255, 0.3);
+$glass-bg: rgba(255, 255, 255, 0.7);
+$glass-bg-hover: rgba(255, 255, 255, 0.9);
+$glass-border: rgba(0, 0, 0, 0.05);
+$glass-border-hover: rgba(0, 0, 0, 0.1);
 $glass-blur: 12px;
 
 // ─── Shadows ───

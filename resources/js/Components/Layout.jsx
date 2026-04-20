@@ -59,8 +59,12 @@ export default function Layout({ children }) {
                                         className="navbar__user-btn"
                                         onClick={(e) => { e.stopPropagation(); setUserDropdownOpen(!userDropdownOpen); }}
                                     >
-                                        <div className="navbar__avatar">
-                                            {auth.user.name.charAt(0).toUpperCase()}
+                                        <div className="navbar__avatar" style={{ overflow: 'hidden', padding: 0 }}>
+                                            {auth.user.avatar ? (
+                                                <img src={auth.user.avatar} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
+                                            ) : (
+                                                <span>{auth.user.name.charAt(0).toUpperCase()}</span>
+                                            )}
                                         </div>
                                         <ChevronDown size={14} />
                                     </button>
@@ -78,11 +82,7 @@ export default function Layout({ children }) {
                                                     <LayoutDashboard size={16} /> Admin Panel
                                                 </Link>
                                             )}
-                                            {auth.user.role === 'seller' && (
-                                                <Link href="/seller/dashboard" className="navbar__dropdown-item">
-                                                    <LayoutDashboard size={16} /> Seller Panel
-                                                </Link>
-                                            )}
+
 
                                             <Link href="/profile" className="navbar__dropdown-item">
                                                 <User size={16} /> My Profile

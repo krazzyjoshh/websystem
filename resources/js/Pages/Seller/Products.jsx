@@ -6,11 +6,13 @@ import '../Admin/Admin.scss';
 
 export default function SellerProducts({ products, categories }) {
     const [showModal, setShowModal] = useState(false);
-    const [form, setForm] = useState({ name: '', category_id: '', price: '', compare_price: '', description: '', stock: '', brand: '', color: '', image_url: '' });
+    const [form, setForm] = useState({ name: '', category_id: '', price: '', compare_price: '', description: '', stock: '', brand: '', color: '', image: null });
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        router.post('/seller/products', form, { onSuccess: () => { setShowModal(false); setForm({ name: '', category_id: '', price: '', compare_price: '', description: '', stock: '', brand: '', color: '', image_url: '' }); } });
+        const fd = new FormData();
+        Object.entries(form).forEach(([k, v]) => { if (v !== null && v !== '') fd.append(k, v); });
+        router.post('/admin/seller/products', fd, { onSuccess: () => { setShowModal(false); setForm({ name: '', category_id: '', price: '', compare_price: '', description: '', stock: '', brand: '', color: '', image: null }); } });
     };
 
     return (
@@ -27,12 +29,12 @@ export default function SellerProducts({ products, categories }) {
                     <tbody>
                         {products.data.map((p) => (
                             <tr key={p.id}>
-                                <td><div style={{ width: 48, height: 48, borderRadius: 8, overflow: 'hidden', background: '#1A1A1A' }}>{p.main_image && <img src={p.main_image} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}</div></td>
-                                <td style={{ fontWeight: 600, color: '#FFF' }}>{p.name}</td>
-                                <td style={{ color: '#00F0FF', fontFamily: 'Space Grotesk', fontWeight: 600 }}>₱{parseFloat(p.price).toLocaleString()}</td>
+                                <td><div style={{ width: 48, height: 48, borderRadius: 8, overflow: 'hidden', background: '#F3F4F6' }}>{p.main_image && <img src={p.main_image} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}</div></td>
+                                <td style={{ fontWeight: 600, color: '#111827' }}>{p.name}</td>
+                                <td style={{ color: '#8B5CF6', fontFamily: 'Inter', fontWeight: 600 }}>₱{parseFloat(p.price).toLocaleString()}</td>
                                 <td><span className={`badge ${p.stock > 0 ? 'badge-success' : 'badge-danger'}`}>{p.stock}</span></td>
                                 <td>{p.sales_count}</td>
-                                <td><button className="btn-ghost" style={{ padding: 6, color: '#EF4444' }} onClick={() => { if (confirm('Delete?')) router.delete(`/seller/products/${p.id}`); }}><Trash2 size={14} /></button></td>
+                                <td><button type="button" className="btn-ghost" style={{ padding: 6, color: '#EF4444' }} onClick={() => { if (confirm('Delete?')) router.post(`/admin/seller/products/${p.id}`, { _method: 'delete' }); }}><Trash2 size={14} /></button></td>
                             </tr>
                         ))}
                     </tbody>
@@ -51,7 +53,10 @@ export default function SellerProducts({ products, categories }) {
                                 <div className="form-group"><label>Stock</label><input type="number" className="form-input" value={form.stock} onChange={(e) => setForm({ ...form, stock: e.target.value })} required /></div>
                             </div>
                             <div className="form-group"><label>Description</label><textarea className="form-input" rows="3" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} required /></div>
-                            <div className="form-group"><label>Image URL</label><input className="form-input" value={form.image_url} onChange={(e) => setForm({ ...form, image_url: e.target.value })} placeholder="https://..." /></div>
+                            <div className="form-group">
+                                <label>Product Image</label>
+                                <input type="file" accept="image/*" className="form-input" onChange={(e) => setForm({ ...form, image: e.target.files[0] })} />
+                            </div>
                             <div className="admin-modal__actions"><button type="button" className="btn-ghost" onClick={() => setShowModal(false)}>Cancel</button><button type="submit" className="btn-primary">Create</button></div>
                         </form>
                     </div>

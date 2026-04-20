@@ -1,17 +1,41 @@
 // ═══════════════════════════════════════════════════════
-// Admin Panel — Dark Theme Dashboard
+// Admin Panel — Analytics Dashboard Theme (Visiora/Overview)
 // ═══════════════════════════════════════════════════════
+
+$bg-color: #F8F9FA;
+$card-bg: #FFFFFF;
+$sidebar-bg: #FFFFFF;
+$text-dark: #1F2937;
+$text-gray: #6B7280;
+$text-light: #9CA3AF;
+$border-color: #F3F4F6;
+$accent-purple: #8B5CF6;
+$accent-purple-light: #EDE9FE;
+$accent-blue: #3B82F6;
+$accent-green: #10B981;
+$accent-orange: #F59E0B;
+$accent-red: #EF4444;
+
+$radius-sm: 8px;
+$radius-md: 12px;
+$radius-lg: 16px;
+$radius-xl: 20px;
+
+$shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
 
 .admin-layout {
   display: flex;
   min-height: 100vh;
-  background: $primary-dark;
+  background: $bg-color;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: $text-dark;
 }
 
 .admin-sidebar {
-  width: 260px;
-  background: $secondary-dark;
-  border-right: 1px solid rgba(0, 240, 255, 0.06);
+  width: 250px;
+  background: $sidebar-bg;
+  border-right: 1px solid $border-color;
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -20,8 +44,8 @@
   left: 0;
   z-index: 100;
 
-  @media (max-width: $tablet) {
-    width: 72px;
+  @media (max-width: 1024px) {
+    width: 80px;
     &__item span,
     &__badge,
     &__logo-text,
@@ -29,328 +53,350 @@
   }
 
   &__header {
-    padding: 24px 20px;
+    padding: 24px;
     display: flex;
     align-items: center;
     gap: 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
   }
 
   &__logo {
     display: flex;
     align-items: center;
-    gap: 4px;
-    font-family: $font-display;
-    font-size: 20px;
+    gap: 8px;
+    font-size: 22px;
     font-weight: 800;
-    letter-spacing: 2px;
   }
 
-  &__logo-text { color: $text-primary; }
-  &__logo-accent {
-    background: $gradient-primary;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
+  &__logo-text { color: $text-dark; }
+  &__logo-accent { color: $accent-purple; }
 
   &__badge {
-    padding: 3px 10px;
-    border-radius: 6px;
-    background: rgba(139, 92, 246, 0.15);
+    padding: 4px 8px;
+    border-radius: $radius-sm;
+    background: $accent-purple-light;
     color: $accent-purple;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 700;
-    letter-spacing: 1px;
   }
 
   &__nav {
     flex: 1;
-    padding: 16px 12px;
+    padding: 16px 20px;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 8px;
   }
 
   &__item {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
     padding: 12px 16px;
     border-radius: $radius-md;
     font-size: 14px;
-    font-weight: 500;
-    color: $text-muted;
-    transition: all 0.2s;
-    background: none;
+    font-weight: 600;
+    color: $text-gray;
+    transition: all 0.2s ease;
+    background: transparent;
     border: none;
     width: 100%;
     text-align: left;
     cursor: pointer;
 
     &:hover {
-      background: rgba(255, 255, 255, 0.04);
-      color: $text-primary;
+      background: #F9FAFB;
+      color: $text-dark;
     }
 
     &--active {
-      background: rgba(0, 240, 255, 0.08);
-      color: $accent-cyan;
-      border: 1px solid rgba(0, 240, 255, 0.12);
-
-      svg { color: $accent-cyan; }
+      background: $accent-purple-light;
+      color: $accent-purple;
+      
+      svg { color: $accent-purple; }
     }
 
     &--danger {
-      color: $danger;
-      &:hover { background: rgba(239, 68, 68, 0.08); }
+      color: $accent-red;
+      &:hover { background: #FEF2F2; }
     }
   }
 
   &__footer {
-    padding: 12px;
-    border-top: 1px solid rgba(255, 255, 255, 0.04);
+    padding: 20px;
+    border-top: 1px solid $border-color;
   }
 }
 
 .admin-main {
   flex: 1;
-  margin-left: 260px;
+  margin-left: 250px;
   min-height: 100vh;
 
-  @media (max-width: $tablet) {
-    margin-left: 72px;
+  @media (max-width: 1024px) {
+    margin-left: 80px;
   }
 
   &__header {
     padding: 24px 32px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-    background: rgba(10, 10, 10, 0.5);
-    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: $bg-color;
     position: sticky;
     top: 0;
     z-index: 50;
   }
 
   &__title {
-    font-family: $font-display;
     font-size: 24px;
     font-weight: 700;
+    color: $text-dark;
   }
 
   &__content {
-    padding: 32px;
+    padding: 0 32px 32px;
   }
 }
 
-// ─── Dashboard Cards ───
+// Cards Replace glass-cards for admin dashboard scope
+.glass-card {
+  background: $card-bg;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-sm;
+  border: 1px solid $border-color;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  &:hover {
+    border-color: #E5E7EB;
+    box-shadow: $shadow-md;
+  }
+}
+
+// Stat Cards specific styling
 .admin-stats {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 
-  @media (max-width: $tablet) { grid-template-columns: repeat(2, 1fr); }
-  @media (max-width: $mobile) { grid-template-columns: 1fr; }
+  @media (max-width: 768px) { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 480px) { grid-template-columns: 1fr; }
 }
 
 .admin-stat-card {
-  padding: 24px;
+  padding: 20px 24px;
   position: relative;
-  overflow: hidden;
+  background: $card-bg;
+  border-radius: $radius-lg;
+  border: 1px solid $border-color;
+  box-shadow: $shadow-sm;
+  display: flex;
+  flex-direction: column;
 
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: $gradient-primary;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-
-  &:hover::after { opacity: 1; }
+  &:nth-child(even) { border-top: 4px solid $accent-purple; }
+  &:nth-child(odd) { border-top: 4px solid $accent-blue; }
 
   &__label {
-    font-size: 12px;
-    color: $text-muted;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 8px;
+    font-size: 13px;
+    color: $text-gray;
+    font-weight: 600;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-transform: none;
+    letter-spacing: normal;
   }
 
   &__value {
-    font-family: $font-display;
-    font-size: 32px;
+    font-family: 'Inter', sans-serif;
+    font-size: 28px;
     font-weight: 800;
-    color: $text-primary;
+    color: $text-dark !important;
     margin-bottom: 8px;
+    letter-spacing: -0.5px;
   }
 
   &__trend {
     font-size: 12px;
-    color: $success;
+    color: $accent-green;
+    font-weight: 600;
     display: flex;
     align-items: center;
     gap: 4px;
   }
 }
 
-// ─── Charts ───
 .admin-charts {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 20px;
-  margin-bottom: 32px;
+  gap: 24px;
+  margin-bottom: 24px;
 
-  @media (max-width: $tablet) { grid-template-columns: 1fr; }
+  @media (max-width: 1024px) { grid-template-columns: 1fr; }
 }
 
 .admin-chart-card {
   padding: 24px;
+  background: $card-bg;
+  border-radius: $radius-lg;
+  border: 1px solid $border-color;
+  box-shadow: $shadow-sm;
 
   &__title {
-    font-family: $font-display;
+    font-family: 'Inter', sans-serif;
     font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 20px;
-    color: $text-secondary;
-  }
-
-  canvas {
-    max-height: 300px;
+    font-weight: 700;
+    color: $text-dark;
+    margin-bottom: 24px;
   }
 }
 
-// ─── Tables ───
+// Table
 .admin-table-wrap {
   overflow-x: auto;
 }
 
 .admin-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
 
   th, td {
-    padding: 14px 16px;
+    padding: 16px;
     text-align: left;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid $border-color;
   }
 
   th {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: $text-muted;
+    font-size: 12px;
+    color: $text-gray;
     font-weight: 600;
-    background: rgba(255, 255, 255, 0.02);
+    background: #F9FAFB;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    &:first-child { border-top-left-radius: $radius-md; }
+    &:last-child { border-top-right-radius: $radius-md; }
   }
 
   td {
     font-size: 14px;
-    color: $text-secondary;
+    color: $text-dark;
+    font-weight: 500;
   }
 
   tr:hover td {
-    background: rgba(0, 240, 255, 0.02);
+    background: #F9FAFB;
   }
 }
 
-// ─── Admin Toolbar ───
+// Search Bar
 .admin-toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 16px;
   margin-bottom: 24px;
-  flex-wrap: wrap;
 
   &__search {
     display: flex;
     align-items: center;
-    gap: 10px;
-    flex: 1;
-    max-width: 400px;
-    padding: 10px 16px;
-    background: $tertiary-dark;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: $radius-md;
+    gap: 12px;
+    padding: 12px 20px;
+    background: $card-bg;
+    border: 1px solid $border-color;
+    border-radius: 999px;
+    width: 320px;
+    box-shadow: $shadow-sm;
 
     input {
       flex: 1;
-      background: none;
       border: none;
-      color: $text-primary;
+      background: transparent;
+      outline: none;
       font-size: 14px;
-      &::placeholder { color: $text-muted; }
+      color: $text-dark;
+      &::placeholder { color: $text-light; }
     }
   }
 
   &__actions {
     display: flex;
-    gap: 10px;
+    gap: 12px;
   }
 }
 
-// ─── Modals ───
+// Badges
+.badge {
+  display: inline-flex;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+
+  &-success { background: #DCFCE7; color: #15803D; border: none; }
+  &-warning { background: #FEF3C7; color: #B45309; border: none; }
+  &-danger { background: #FEE2E2; color: #B91C1C; border: none; }
+  &-cyan, &-purple { background: $accent-purple-light; color: $accent-purple; border: none; }
+}
+
+// Modals
 .admin-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  animation: fadeIn 0.2s ease;
 }
 
 .admin-modal {
-  width: 100%;
-  max-width: 540px;
-  max-height: 90vh;
-  overflow-y: auto;
-  background: $secondary-dark;
-  border: 1px solid rgba(0, 240, 255, 0.1);
+  background: $card-bg;
   border-radius: $radius-lg;
+  width: 100%;
+  max-width: 500px;
   padding: 32px;
-  animation: fadeInUp 0.3s ease;
+  box-shadow: $shadow-md;
+  border: none;
 
   &__header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 24px;
-
-    h2 {
-      font-family: $font-display;
-      font-size: 20px;
-      font-weight: 700;
-    }
+    h2 { font-size: 20px; font-weight: 700; color: $text-dark; font-family: 'Inter', sans-serif; }
   }
 
   &__close {
-    width: 36px;
-    height: 36px;
-    border-radius: $radius-sm;
-    background: rgba(255, 255, 255, 0.04);
+    background: #F3F4F6;
     border: none;
-    color: $text-secondary;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
+    color: $text-gray;
     cursor: pointer;
-    &:hover { color: $text-primary; background: rgba(255,255,255,0.08); }
+    &:hover { background: #E5E7EB; color: $text-dark; }
   }
+}
 
-  &__actions {
-    display: flex;
-    gap: 12px;
-    justify-content: flex-end;
-    margin-top: 24px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
-  }
+// Global overrides for admin typography inside cards
+h3.admin-chart-card__title { color: $text-dark !important; font-family: 'Inter', sans-serif !important; }
+.admin-stat-card__value { color: $text-dark !important; font-family: 'Inter', sans-serif !important; }
+.glass-card p { color: $text-gray !important; }
+.glass-card h3 { color: $text-dark !important; }
+.glass-card td { color: $text-dark !important; }
+
+.form-input {
+  background: #F9FAFB !important;
+  color: $text-dark !important;
+  border: 1px solid $border-color !important;
+  &::placeholder { color: $text-light !important; }
+}
+.form-group label {
+  color: $text-gray !important;
 }

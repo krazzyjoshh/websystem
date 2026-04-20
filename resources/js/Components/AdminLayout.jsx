@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, usePage } from '@inertiajs/react';
-import { LayoutDashboard, Users, Package, Tags, ShoppingCart, Store, Settings, ChevronRight, LogOut } from 'lucide-react';
+import { LayoutDashboard, Users, Package, Tags, ShoppingCart, Store, Settings, ChevronRight, LogOut, User } from 'lucide-react';
 import '../Pages/Admin/Admin.scss';
 
 const menuItems = [
@@ -13,7 +13,8 @@ const menuItems = [
 ];
 
 export default function AdminLayout({ children, title }) {
-    const { url } = usePage();
+    const { url, auth } = usePage();
+    const user = auth?.user;
 
     return (
         <div className="admin-layout">
@@ -24,6 +25,21 @@ export default function AdminLayout({ children, title }) {
                         <span className="admin-sidebar__logo-accent">HUB</span>
                     </Link>
                     <span className="admin-sidebar__badge">ADMIN</span>
+                </div>
+
+                {/* Profile in sidebar */}
+                <div style={{ padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 12, borderBottom: '1px solid #F3F4F6' }}>
+                    {user?.avatar ? (
+                        <img src={user.avatar} alt="" style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover' }} />
+                    ) : (
+                        <div style={{ width: 40, height: 40, borderRadius: '50%', background: '#EDE9FE', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, fontWeight: 700, color: '#8B5CF6' }}>
+                            {user?.name?.charAt(0)?.toUpperCase()}
+                        </div>
+                    )}
+                    <div style={{ overflow: 'hidden' }}>
+                        <p style={{ fontSize: 14, fontWeight: 600, color: '#111827', margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{user?.name}</p>
+                        <p style={{ fontSize: 12, color: '#6B7280', margin: 0 }}>Administrator</p>
+                    </div>
                 </div>
 
                 <nav className="admin-sidebar__nav">

@@ -24,7 +24,7 @@ export default function AdminUsers({ users, filters }) {
 
     const handleDelete = (id) => {
         if (confirm('Delete this user?')) {
-            router.delete(`/admin/users/${id}`);
+            router.post(`/admin/users/${id}`, { _method: 'delete' });
         }
     };
 
@@ -52,10 +52,21 @@ export default function AdminUsers({ users, filters }) {
                     <tbody>
                         {users.data.map((user) => (
                             <tr key={user.id}>
-                                <td style={{ fontWeight: 600, color: '#FFF' }}>{user.name}</td>
-                                <td>{user.email}</td>
-                                <td><span className={`badge ${user.role === 'admin' ? 'badge-purple' : user.role === 'seller' ? 'badge-cyan' : 'badge-success'}`}>{user.role}</span></td>
-                                <td style={{ color: '#666' }}>{new Date(user.created_at).toLocaleDateString()}</td>
+                                <td style={{ fontWeight: 600, color: '#111827' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                                        {user.avatar ? (
+                                            <img src={user.avatar} style={{ width: 32, height: 32, borderRadius: '50%', objectFit: 'cover' }} />
+                                        ) : (
+                                            <div style={{ width: 32, height: 32, borderRadius: '50%', background: '#EDE9FE', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, color: '#8B5CF6' }}>
+                                                {user.name.charAt(0).toUpperCase()}
+                                            </div>
+                                        )}
+                                        {user.name}
+                                    </div>
+                                </td>
+                                <td style={{ color: '#6B7280' }}>{user.email}</td>
+                                <td><span className={`badge ${user.role === 'admin' ? 'badge-purple' : user.role === 'seller' ? 'badge-cyan' : 'badge-success'}`} style={{ textTransform: 'capitalize' }}>{user.role}</span></td>
+                                <td style={{ color: '#9CA3AF', fontSize: 13 }}>{new Date(user.created_at).toLocaleDateString()}</td>
                                 <td>
                                     <div style={{ display: 'flex', gap: 8 }}>
                                         <button className="btn-ghost" style={{ padding: 6 }} onClick={() => setEditUser({ ...user })}><Edit2 size={14} /></button>

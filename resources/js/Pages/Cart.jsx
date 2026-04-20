@@ -10,7 +10,7 @@ export default function Cart({ cartItems, cartTotal }) {
     };
 
     const removeItem = (itemId) => {
-        router.delete(`/cart/${itemId}`, { preserveScroll: true });
+        router.post(`/cart/${itemId}`, { _method: 'delete' }, { preserveScroll: true });
     };
 
     const shippingFee = cartTotal >= 5000 ? 0 : 150;
@@ -62,7 +62,7 @@ export default function Cart({ cartItems, cartTotal }) {
                                         <div className="cart-item__subtotal">
                                             ₱{item.subtotal.toLocaleString()}
                                         </div>
-                                        <button className="cart-item__remove" onClick={() => removeItem(item.id)}>
+                                        <button type="button" className="cart-item__remove" onClick={(e) => { e.preventDefault(); removeItem(item.id); }}>
                                             <Trash2 size={16} />
                                         </button>
                                     </div>

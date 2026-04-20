@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, Head } from '@inertiajs/react';
+import { Link, Head, router } from '@inertiajs/react';
 import Layout from '../Components/Layout';
 import { ArrowRight, TrendingUp, Star, Truck, Shield, Headphones, BadgeCheck, Eye, ShoppingBag, Zap } from 'lucide-react';
 import './Home.scss';
@@ -85,6 +85,11 @@ function CategoryCard({ category }) {
 }
 
 function ProductCard({ product, rank }) {
+    const addToCart = (e) => {
+        e.preventDefault();
+        router.post('/cart/add', { product_id: product.id, quantity: 1 }, { preserveScroll: true });
+    };
+
     return (
         <Link href={`/products/${product.slug}`} className="product-card glass-card">
             {rank && <div className="product-card__rank">#{rank}</div>}
@@ -104,11 +109,16 @@ function ProductCard({ product, rank }) {
                     </div>
                     <span className="product-card__sales">{product.sales_count} sold</span>
                 </div>
-                <div className="product-card__pricing">
-                    <span className="product-card__price">₱{parseFloat(product.price).toLocaleString()}</span>
-                    {product.compare_price && (
-                        <span className="product-card__compare">₱{parseFloat(product.compare_price).toLocaleString()}</span>
-                    )}
+                <div className="product-card__pricing" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 12 }}>
+                    <div>
+                        <span className="product-card__price" style={{ display: 'block' }}>₱{parseFloat(product.price).toLocaleString()}</span>
+                        {product.compare_price && (
+                            <span className="product-card__compare">₱{parseFloat(product.compare_price).toLocaleString()}</span>
+                        )}
+                    </div>
+                    <button onClick={addToCart} className="btn-primary" style={{ padding: '6px 12px', fontSize: 12, display: 'flex', alignItems: 'center', gap: 6, zIndex: 10 }}>
+                        <ShoppingBag size={14} /> Buy
+                    </button>
                 </div>
             </div>
         </Link>
@@ -159,9 +169,7 @@ export default function Home({ categories, featuredProducts, dealProducts, trend
                 </div>
 
                 <div className="hero__content container">
-                    <div className="hero__badge">
-                        <Zap size={14} />
-                        <span>Live Data Stream</span>
+                    <div className="hero__badge" style={{ display: 'none' }}>
                     </div>
 
                     <h1 className="hero__title">
@@ -189,37 +197,7 @@ export default function Home({ categories, featuredProducts, dealProducts, trend
                     </div>
                 </div>
 
-                {/* Dashboard Preview */}
-                <div className="hero__dashboard container">
-                    <div className="hero__dashboard-card glass-card">
-                        <div className="hero__dashboard-tabs">
-                            <span className="hero__dashboard-tab hero__dashboard-tab--active">Dashboard</span>
-                            <span className="hero__dashboard-tab">Sales</span>
-                            <span className="hero__dashboard-tab">Analytics</span>
-                            <span className="hero__dashboard-tab">Settings</span>
-                        </div>
-                        <div className="hero__dashboard-header">
-                            <h2>Global Cluster Insights</h2>
-                        </div>
-                        <div className="hero__dashboard-stats">
-                            <div className="hero__dashboard-stat">
-                                <span className="hero__dashboard-stat-label">Revenue Growth</span>
-                                <span className="hero__dashboard-stat-value">₱{stats.monthlyRevenue ? parseFloat(stats.monthlyRevenue).toLocaleString('en-PH', {minimumFractionDigits: 2}) : '14,205,890.00'}</span>
-                                <span className="hero__dashboard-stat-trend positive">+22.4% vs previous period</span>
-                            </div>
-                            <div className="hero__dashboard-stat">
-                                <span className="hero__dashboard-stat-label">Orders Performance</span>
-                                <span className="hero__dashboard-stat-value">{stats.totalOrders || 0}</span>
-                                <span className="hero__dashboard-stat-trend positive">Active tracking</span>
-                            </div>
-                            <div className="hero__dashboard-stat">
-                                <span className="hero__dashboard-stat-label">Customer Reach</span>
-                                <span className="hero__dashboard-stat-value">{stats.happyCustomers || 0}</span>
-                                <span className="hero__dashboard-stat-trend positive">Growing network</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {/* Dashboard Preview Removed */}
             </section>
 
             {/* ═══ STATS SECTION ═══ */}

@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+use App\Models\SellerInviteCode;
 
 class AdminCrudController extends Controller
 {
@@ -145,13 +146,20 @@ class AdminCrudController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'image' => 'nullable|image|max:2048',
         ]);
+
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('categories', 'public');
+            $imagePath = '/storage/' . $path;
+        }
 
         Category::create([
             'name' => $request->name,
-            'slug' => Str::slug($request->name),
+            'slug' => Str::slug($request->name) . '-' . Str::random(4),
             'description' => $request->description,
-            'image' => $request->image,
+            'image' => $imagePath,
             'icon' => $request->icon,
         ]);
 
@@ -216,8 +224,36 @@ class AdminCrudController extends Controller
             ->withCount('products')
             ->get();
 
+        $inviteCodes = SellerInviteCode::with(['creator', 'user'])->orderByDesc('created_at')->get();
+
         return Inertia::render('Admin/Sellers', [
             'sellers' => $sellers,
+            'inviteCodes' => $inviteCodes,
         ]);
+    }
+
+    public function generateInviteCode(Request $request)
+    {
+        $code = strtoupper(Str::random(10));
+        SellerInviteCode::create([
+            'code' => $code,
+            'created_by' => auth()->id(),
+            'note' => $request->note,
+        ]);
+
+        return back()->with('success', 'Invite code generated!');
+    }
+
+    public function verifySeller(Request $request, User $seller)
+    {
+        if ($seller->role !== 'seller' || !$seller->sellerProfile) {
+            return back()->with('error', 'Invalid seller.');
+        }
+
+        $seller->sellerProfile->update([
+            'is_verified' => true
+        ]);
+
+        return back()->with('success', 'Seller verified successfully!');
     }
 }

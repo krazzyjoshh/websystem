@@ -60,6 +60,32 @@ class AdminDashboardController extends Controller
             ->groupBy('status')
             ->get();
 
+        $notifications = [];
+        $unverifiedSellers = User::where('role', 'seller')->whereHas('sellerProfile', function($query) {
+            $query->where('is_verified', false);
+        })->count();
+
+        if ($unverifiedSellers > 0) {
+            $notifications[] = [
+                'id' => 'ns1',
+                'title' => 'Unverified Sellers',
+                'message' => "You have {$unverifiedSellers} seller(s) waiting for verification.",
+                'type' => 'warning',
+                'time' => 'Action Required'
+            ];
+        }
+
+        $pendingOrders = Order::where('status', 'pending')->count();
+        if ($pendingOrders > 0) {
+            $notifications[] = [
+                'id' => 'no1',
+                'title' => 'Pending Orders',
+                'message' => "There are {$pendingOrders} new order(s) pending processing.",
+                'type' => 'info',
+                'time' => 'Just now'
+            ];
+        }
+
         return Inertia::render('Admin/Dashboard', [
             'stats' => [
                 'totalRevenue' => $totalRevenue,
@@ -72,6 +98,7 @@ class AdminDashboardController extends Controller
             'categoryPerformance' => $categoryPerformance,
             'recentOrders' => $recentOrders,
             'orderStatuses' => $orderStatuses,
+            'notifications' => $notifications,
         ]);
     }
 }
